@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://heroku_fvlkkwmn:2qfj8unf0eakilrlo67n3kvulc@ds119523.mlab.com:19523/heroku_fvlkkwmn' ||'mongodb://127.0.0.1/my_database';
+var mongoDB = 'mongodb://heroku_bjdxk913:6kaum7nm90782lpnde5gqvh0s@ds119523.mlab.com:19523/heroku_bjdxk913' ||'mongodb://127.0.0.1/my_database';
 
 
 const config = {
