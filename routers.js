@@ -1,6 +1,6 @@
 var router = require('express').Router();
 localizacao = require('./localizacao');
-
+var ObjectId = require('mongodb').ObjectId; 
 router.get('/', function (req, res) {
     localizacao.find().lean().exec(function (err, local) {
         console.log(local);
@@ -28,5 +28,21 @@ router.route('/novaLocalicade').post(function (req, res) {
     
 });
 
+router.route('/um').delete(function (req, res) {
+    var busca = req.body._id;
+    console.log(busca);
+
+    localizacao.deleteOne({"_id" : busca}).exec(function (err, local) {
+        var text
+        console.log(local);
+        if(!err){
+            text = "objeto :" + busca + " destruido";
+        }else{
+            res.json({ err });
+        }
+        res.json({ text });
+    });
+    
+});
 
 module.exports = router;
