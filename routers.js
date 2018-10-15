@@ -15,7 +15,7 @@ router.get('/todos', function (req, res) {
     });
 });
 
-router.route('/novaLocalicade').post(function (req, res) {
+router.route('/novalocalicade').post(function (req, res) {
     var local = new localizacao();
     local.titulo = req.body.titulo;
     local.descricao = req.body.descricao;
@@ -26,13 +26,13 @@ router.route('/novaLocalicade').post(function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            res.json({ message: 'localidade criada!' + local });
+            res.json({ message: 'localidade criada!' });
         }
     });
 
 });
 
-router.route('/deletarLocalidade').delete(function (req, res) {
+router.route('/deletarlocalidade').delete(function (req, res) {
     var busca = req.body._id;
 
     localizacao.deleteOne({ "_id": busca }).exec(function (err, local) {
@@ -41,12 +41,12 @@ router.route('/deletarLocalidade').delete(function (req, res) {
         if (err) {
             res.json({ err });
         } else {
-            text = "objeto :" + busca + " destruido";
+            text = "Localidade  destruido";
             res.json({ text });
         }
     });
 });
-router.route('/atualizarLocalidade').post(function (req, res) {
+router.route('/atualizarlocalidade').post(function (req, res) {
     var id = req.body._id;
     localizacao.findByIdAndUpdate(id, {
         $set: {

@@ -1,5 +1,5 @@
 var routersUsuario = require('express').Router();
-Usuario = require('./Usuario');
+Usuario = require('./usuario');
 
 routersUsuario.get('/Usuario', function (req, res) {
     var busca = req.body._id;
@@ -8,53 +8,54 @@ routersUsuario.get('/Usuario', function (req, res) {
     });
 });
 
-routersUsuario.get('/Usuario/todos', function (req, res) {
+routersUsuario.get('/usuario/todos', function (req, res) {
     Usuario.find({}).exec(function (err, result) {
         if (err) throw err;
         res.json({ result });
     });
 });
 
-routersUsuario.route('/Usuario/novoUsuario').post(function (req, res) {
+routersUsuario.route('/novoUsuario').post(function (req, res) {
     console.log(req)
-    var Usuario = new localizacao();
-    Usuario.nome = req.body.nome;
-    Usuario.username = req.body.username;
-    Usuario.email	= req.body.email;
-    Usuario.password = req.body.password;
+    var user = new Usuario();
+    user.nome = req.body.nome;
+    user.username = req.body.username;
+    user.email	= req.body.email;
+    user.password = req.body.password;
 
-    Usuario.save(function (err) {
+    user.save(function (err) {
         if (err) {
             res.send(err);
         } else {
-            res.json({ message: 'Usuario criado!' + Usuario });
+            res.json({ message: 'Usuario criado!'});
         }
     });
 
 });
 
-routersUsuario.route('/deletarUsuario').delete(function (req, res) {
+routersUsuario.route('/deletarusuario').delete(function (req, res) {
     var busca = req.body._id;
 
     Usuario.deleteOne({ "_id": busca }).exec(function (err, usuario) {
         var text
-        console.log(usuario);
+        
         if (err) {
             res.json({ err });
         } else {
-            text = "Usuario :" + busca + " destruido";
+            text = "Usuario  destruido";
             res.json({ text });
         }
     });
 });
-routersUsuario.route('/atualizarUsuario').post(function (req, res) {
+routersUsuario.route('/atualizarusuario').post(function (req, res) {
     var id = req.body._id;
     Usuario.findByIdAndUpdate(id, {
         $set: {
-            titulo: req.body.titulo,
-            descricao: req.body.descricao,
-            latitude: req.body.latitude,
-            longitude: req.body.longitude
+            nome: req.body.nome,
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+
 
         }
     }, { new: true }, function (err, usuario) {
