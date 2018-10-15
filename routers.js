@@ -16,6 +16,7 @@ router.get('/todos', function (req, res) {
 });
 
 router.route('/novalocalicade').post(function (req, res) {
+    console.log("Requisicao: " + JSON.stringify(req.body))
     var local = new localizacao();
     local.titulo = req.body.titulo;
     local.descricao = req.body.descricao;
@@ -48,7 +49,8 @@ router.route('/deletarlocalidade').delete(function (req, res) {
 });
 router.route('/atualizarlocalidade').post(function (req, res) {
     var id = req.body._id;
-    localizacao.findByIdAndUpdate(id, {
+    console.log(JSON.stringify(req.body))
+    localizacao.findOneAndUpdate(id, {
         $set: {
             titulo: req.body.titulo,
             descricao: req.body.descricao,
