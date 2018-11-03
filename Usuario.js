@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-var JSON = require('json');
 
 var UsuarioSchema = new mongoose.Schema(
     {
@@ -9,6 +8,7 @@ var UsuarioSchema = new mongoose.Schema(
         username: { type: String, required: true, index: { unique: true } },
         email: {type: String, required: true},
         password :{type: String, required :true},
+        admin: {type: Boolean, default: true }
         //trocar password depois por hash and salt
         //dataNascimento
         //
