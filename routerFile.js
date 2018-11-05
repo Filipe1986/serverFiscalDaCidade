@@ -1,6 +1,7 @@
 const routerFile = require('express').Router();
 const Busboy = require('busboy');
 const fs = require('fs');
+var multer = require('multer'); 
 
 
 routerFile.route('/upload').post(function (req, res, next) {
