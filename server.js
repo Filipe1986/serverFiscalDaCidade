@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var database = require('./database');
 
 var router = require('./routers');
 var routersUsuario = require('./routersUsuario');
