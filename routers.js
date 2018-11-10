@@ -29,17 +29,19 @@ router.get('/todos', function (req, res) {
     });
 });
 
-//router.route('/novalocalicade').post(function (req, res) {
-router.post('/novalocalicade', upload.single('photos'), function (req, res, next) {
-    console.log("Requisicao: " + JSON.stringify(req.body))
+router.post('/novalocalicade',  upload.array('photos', 12), function (req, res, next) {
+    //console.log("Requisicao: " + JSON.stringify(req.body))
     var local = new localizacao();
 
     local.titulo = req.body.titulo;
     local.descricao = req.body.descricao;
     local.latitude = req.body.latitude;
     local.longitude = req.body.longitude;
-    local.pathImage = req.file.path;
-
+    console.log(req.files.length);
+    for(var i = 0; i < req.files.length; i++ ){
+        local.pathImages[i] =  req.files[i].path;
+    }
+    
     local.save(function (err) {
         if (err) {
             res.send(err);

@@ -40,14 +40,6 @@ var storage =   multer.diskStorage({
         //console.log(req.body);
     });
     return res.end("File is uploaded");
-    if(err) {
-        return res.end("Error uploading file.");
-    }
-    
-
-    // req.files is array of `photos` files
-    // req.body will contain the text fields, if there were any
-
   });
   
 
