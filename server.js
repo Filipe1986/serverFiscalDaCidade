@@ -7,8 +7,10 @@ var router = require('./routers');
 var routersUsuario = require('./routersUsuario');
 var routerFile = require('./routerFile');
 
+
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+  app.use('/uploads', express.static('uploads'));
 
 
   app.use('/api', routersUsuario);
