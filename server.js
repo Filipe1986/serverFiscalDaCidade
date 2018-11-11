@@ -1,22 +1,23 @@
 var express = require('express');
-var appExpress = express();
+var app = express();
 var bodyParser = require('body-parser');
 var router = require('./routers');
 var routersUsuario = require('./routersUsuario');
+var database = require('./database');
 
 var port = process.env.PORT || 4000;
 
 //app.set('superSecret', config.secret); 
 
-appExpress.use(bodyParser.urlencoded({ extended: true }));
-appExpress.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-appExpress.use('/api', router);
-//appExpress.use('/api', routersUsuario);
+app.use('/api', router);
+app.use('/api', routersUsuario);
 
-appExpress.listen(port);
+app.listen(port);
 console.log('go to   http://localhost:' + port + '/api');
 
 
 
-module.exports = appExpress;
+module.exports = app;

@@ -44,7 +44,6 @@ routersUsuario.post('/authenticate', function (req, res) {
     Função de rota que faz validação de token.
     Todas as funções posteriores a essa função necessitarão de token
 
-
 */
 
 routersUsuario.use(function (req, res, next) {
