@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-var JSON = require('json');
 
 var LocalizacaoSchema = new mongoose.Schema(
     {
@@ -7,8 +6,11 @@ var LocalizacaoSchema = new mongoose.Schema(
         descricao :{type: String, required: true},
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true },
+        pathImages: [{type: String , required :false}]
+        
+        //data : { type : Date, default: Date.now },
+        //likes : [{ type: Schema.ObjectId, ref: 'User'}]
 
-        //avaliação
     }
 );
 module.exports = mongoose.model('Localizacao', LocalizacaoSchema);
