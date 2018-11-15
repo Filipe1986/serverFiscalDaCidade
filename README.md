@@ -12,8 +12,6 @@ Heroku site -> aplicacao criada -> settings -> reveal Config Vars -> colocar a u
 https://fiscal-cidade.herokuapp.com/api
 
 
-Teste
-
 Redis para armazenamento de token 
 npm install oauth2-server
 
