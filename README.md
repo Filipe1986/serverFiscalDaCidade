@@ -11,7 +11,6 @@ Heroku site -> aplicacao criada -> settings -> reveal Config Vars -> colocar a u
 
 https://fiscal-cidade.herokuapp.com/api
 
-
 Redis para armazenamento de token 
 npm install oauth2-server
 
@@ -21,5 +20,3 @@ nodemon app.js
 
 //Vídeo sobre multer
 https://www.youtube.com/watch?v=srPXMt1Q0nY
-
-//TEste
