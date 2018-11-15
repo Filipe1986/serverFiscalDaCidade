@@ -10,12 +10,17 @@ Heroku site -> aplicacao criada -> settings -> reveal Config Vars -> colocar a u
 
 
 https://fiscal-cidade.herokuapp.com/api
-
-Redis para armazenamento de token 
-npm install oauth2-server
-
 As rotas protegidas pelo token devem ser criadas após a rota de middleware dentro do arquivo, 
 A ordem das rotas é importante, tanto no arquivo routers quando no arquivo server.
 
 //Vídeo para autorização
 https://www.youtube.com/watch?v=CUKexA3rNMk
+Redis para armazenamento de token 
+npm install oauth2-server
+
+
+//Para rodar a aplicação
+nodemon app.js
+
+//Vídeo sobre multer
+https://www.youtube.com/watch?v=srPXMt1Q0nY

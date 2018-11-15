@@ -1,6 +1,20 @@
 var router = require('express').Router();
 localizacao = require('./localizacao');
 
+var multer = require('multer'); 
+
+
+var storage =   multer.diskStorage({
+    destination: function (req, file, callback) {
+      callback(null, 'uploads');
+    },
+    filename: function (req, file, callback) {
+        callback(null, `${file.fieldname}-${Date.now()}.${file.originalname}`);
+    }
+  });
+
+  var upload = multer({ storage: storage });
+
 router.get('/', function (req, res) {
     var busca = req.body._id;
     localizacao.find({ "_id": busca }).lean().exec(function (err, local) {
@@ -15,14 +29,19 @@ router.get('/todos', function (req, res) {
     });
 });
 
-router.route('/novalocalicade').post(function (req, res) {
-    console.log("Requisicao: " + JSON.stringify(req.body))
+router.post('/novalocalicade',  upload.array('photos', 12), function (req, res, next) {
+    
     var local = new localizacao();
+
     local.titulo = req.body.titulo;
     local.descricao = req.body.descricao;
     local.latitude = req.body.latitude;
     local.longitude = req.body.longitude;
-
+    console.log(req.files.length);
+    for(var i = 0; i < req.files.length; i++ ){
+        local.pathImages[i] =  req.files[i].path;
+    }
+    
     local.save(function (err) {
         if (err) {
             res.send(err);
