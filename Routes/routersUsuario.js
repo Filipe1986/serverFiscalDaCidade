@@ -2,71 +2,9 @@ const routersUsuario = require('express').Router();
 const Usuario = require('../models/Usuario');
 const bcryptjs = require('bcryptjs');
 const config = require('../config');
-//var jwt = require('jsonwebtoken');
+const jwt  = require('jsonwebtoken');
+const checkAuth = require('../middleware/check-auth');
 
-
-routersUsuario.post('/authenticate', function (req, res) {
-
-    // find the user
-    Usuario.findOne({
-        nome: req.body.nome
-    }, function (err, user) {
-        if (err) throw err;
-        if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
-        } else if (user) {
-
-            if (user.password != req.body.password) {
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-            } else {
-
-                const payload = {
-                    admin: user.admin
-                };
-
-                var token = jwt.sign(payload, config.secret, {
-                    expiresIn: '1440' // expires in 24 hours
-                });
-
-                res.json({
-                    success: true,
-                    message: 'Enjoy your token!',
-                    token: token
-                });
-            }
-        }
-    });
-});
-
-
-/*
-
-    Função de rota que faz validação de token.
-    Todas as funções posteriores a essa função necessitarão de token
-
-*/
-/*
-routersUsuario.use(function (req, res, next) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    if (token) {
-    
-        jwt.verify(token, config.secret, function (err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                req.decoded = decoded;
-                next();
-            }
-        });
-
-    } else {
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-    }
-});
-*/
 routersUsuario.get('/usuario/todos', function (req, res) {
     Usuario.find({}).exec(function (err, result) {
         if (err) throw err;
@@ -107,17 +45,40 @@ routersUsuario.route('/novoUsuario').post(function (req, res) {
                     });
                 }
             });
-
         }
-
-
     });
-
-
 
 });
 
-routersUsuario.route('/deletarusuario').delete(function (req, res) {
+routersUsuario.route('/login').post(function (req, res) {
+    Usuario.find({ "email": req.body.email }).lean().exec(function (err, usuario) {
+        if (usuario.length < 1) {
+            return res.status(401).json("Falha na autenticação!");
+        }
+        bcryptjs.compare(req.body.password, usuario[0].password, (err, result) => {
+            if(err){
+                return res.status(401).json("Falha na autenticação!");
+            }
+            if(result){
+               const token = jwt.sign({
+                    email: usuario[0].email,
+                    userId: usuario[0]._id                    
+                }, config.jwtSecret, { expiresIn : "1h"});
+                return res.status(200).json(
+                    {message: "Usário logado",
+                    token : token
+                });
+
+            }
+            return res.status(401).json("Falha na autenticação!");
+        });
+    });
+});
+
+
+
+//routersUsuario.route('/deletarusuario', checkAuth).delete(function (req, res) {
+routersUsuario.delete('/deletarusuario', checkAuth,function (req, res) {
     var busca = req.body._id;
 
     Usuario.deleteOne({ "_id": busca }).exec(function (err, usuario) {
@@ -128,13 +89,12 @@ routersUsuario.route('/deletarusuario').delete(function (req, res) {
                 res.json( "Usuario  deletado" );
             }else {
                 res.json( "Usuario  Inexistente" );
-            }
-            
-            
+            }        
         }
     });
 });
-routersUsuario.route('/atualizarusuario').post(function (req, res) {
+//routersUsuario.route('/atualizarusuario').post(function (req, res) {
+routersUsuario.post('/atualizarusuario', checkAuth, function (req, res) {
     var id = req.body._id;
     Usuario.findByIdAndUpdate(id, {
         $set: {
@@ -142,8 +102,6 @@ routersUsuario.route('/atualizarusuario').post(function (req, res) {
             username: req.body.username,
             email: req.body.email,
             password: req.body.password
-
-
         }
     }, { new: true }, function (err, usuario) {
         if (err) return handleError(err);
