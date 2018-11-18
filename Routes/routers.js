@@ -1,5 +1,5 @@
 var router = require('express').Router();
-localizacao = require('./localizacao');
+localizacao = require('../models/localizacao');
 
 var multer = require('multer'); 
 
@@ -61,7 +61,7 @@ router.route('/deletarlocalidade').delete(function (req, res) {
         if (err) {
             res.json({ err });
         } else {
-            text = "Localidade  destruido";
+            text = "Localidade  Deletada";
             res.json({ text });
         }
     });

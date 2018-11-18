@@ -1,5 +1,6 @@
+// config.js
+//validação sem sessão
 module.exports = {
-    'secret': 'ilovescotchyscotch',
-    //'database': 'mongodb://noder:noderauth&54;proximus.modulusmongo.net:27017/so9pojyN'
-
+    jwtSecret: "MyS3cr3tK3Y",
+    jwtSession: {session: false}
 };

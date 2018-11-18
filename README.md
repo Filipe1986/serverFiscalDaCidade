@@ -24,3 +24,9 @@ nodemon app.js
 
 //Vídeo sobre multer
 https://www.youtube.com/watch?v=srPXMt1Q0nY
+
+
+//Resolvendo o problema do python para instalar o bcrypt
+instalando o bcryptjs ao invês do bcrypt
+npm install bcryptjs
+npm install --global --production windows-build-tools
