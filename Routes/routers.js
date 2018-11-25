@@ -25,7 +25,7 @@ router.get('/', function (req, res) {
 router.get('/todos', function (req, res) {
     localizacao.find({}).exec(function (err, result) {
         if (err) throw err;
-        res.json({ result });
+        res.json({ localizacoes : result });
     });
 });
 

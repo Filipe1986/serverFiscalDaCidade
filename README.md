@@ -10,6 +10,7 @@ Heroku site -> aplicacao criada -> settings -> reveal Config Vars -> colocar a u
 
 
 https://fiscal-cidade.herokuapp.com/api
+https://fiscal-cidade.herokuapp.com/
 As rotas protegidas pelo token devem ser criadas após a rota de middleware dentro do arquivo, 
 A ordem das rotas é importante, tanto no arquivo routers quando no arquivo server.
 

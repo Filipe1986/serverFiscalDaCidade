@@ -8,7 +8,7 @@ const checkAuth = require('../middleware/check-auth');
 routersUsuario.get('/usuario/todos', function (req, res) {
     Usuario.find({}).exec(function (err, result) {
         if (err) throw err;
-        res.json({ result });
+        res.json({ usuario : result });
     });
 });
 
