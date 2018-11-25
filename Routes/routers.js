@@ -29,7 +29,7 @@ router.get('/todos', function (req, res) {
     });
 });
 
-router.post('/novalocalicade',  upload.array('photos', 12), function (req, res, next) {
+router.post('/novalocalidade',  upload.array('photos', 12), function (req, res, next) {
     
     console.log(req.body);
     var local = new localizacao();
@@ -42,7 +42,7 @@ router.post('/novalocalicade',  upload.array('photos', 12), function (req, res, 
     for(var i = 0; i < req.files.length; i++ ){
         local.pathImages[i] =  req.files[i].path;
     }
-    
+    local.idUsuario = req.body.idUsuario;
     local.save(function (err) {
         if (err) {
             res.send(err);
