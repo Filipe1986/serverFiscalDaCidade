@@ -92,7 +92,7 @@ routersUsuario.delete('/deletarusuario', checkAuth,function (req, res) {
             }        
         }
     });
-});
+});                                      
 //routersUsuario.route('/atualizarusuario').post(function (req, res) {
 routersUsuario.post('/atualizarusuario', checkAuth, function (req, res) {
     var id = req.body._id;

@@ -25,12 +25,13 @@ router.get('/', function (req, res) {
 router.get('/todos', function (req, res) {
     localizacao.find({}).exec(function (err, result) {
         if (err) throw err;
-        res.json({ localizacoes : result });
+        res.json({ localizacoes :result });
     });
 });
 
 router.post('/novalocalicade',  upload.array('photos', 12), function (req, res, next) {
     
+    console.log(req.body);
     var local = new localizacao();
 
     local.titulo = req.body.titulo;
