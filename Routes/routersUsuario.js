@@ -14,6 +14,8 @@ routersUsuario.get('/usuario/todos', function (req, res) {
 
 routersUsuario.get('/Usuario', function (req, res) {
     var busca = req.body._id;
+    console.log('usuario');
+    console.log(req.body);
     Usuario.find({ "_id": busca }).lean().exec(function (err, usuario) {
         res.json({ usuario });
     });
@@ -60,13 +62,17 @@ routersUsuario.route('/login').post(function (req, res) {
                 return res.status(401).json("Falha na autenticação!");
             }
             if(result){
+                console.log('resultado' +JSON.stringify(usuario[0]._id));
                const token = jwt.sign({
                     email: usuario[0].email,
                     userId: usuario[0]._id                    
                 }, config.jwtSecret, { expiresIn : "1h"});
                 return res.status(200).json(
                     {message: "Usário logado",
-                    token : token
+                    token : token,
+                    _id: usuario[0]._id,
+
+
                 });
 
             }
@@ -85,7 +91,8 @@ routersUsuario.delete('/deletarusuario', checkAuth,function (req, res) {
         if (err) {
             res.status(500).json({ err });
         } else {
-            if(usuario.length > 0 ){
+            console.log(usuario);
+            if(usuario.email){
                 res.json( "Usuario  deletado" );
             }else {
                 res.json( "Usuario  Inexistente" );
