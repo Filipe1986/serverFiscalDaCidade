@@ -14,6 +14,6 @@ var LocalizacaoSchema = new mongoose.Schema(
         //data : { type : Date, default: Date.now },
         //likes : [{ type: Schema.ObjectId, ref: 'User'}]
 
-    }
+    }, {timestamps: true}
 );
 module.exports = mongoose.model('Localizacao', LocalizacaoSchema);

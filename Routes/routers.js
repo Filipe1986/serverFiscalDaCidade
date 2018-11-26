@@ -1,19 +1,19 @@
 var router = require('express').Router();
 localizacao = require('../models/localizacao');
 
-var multer = require('multer'); 
+var multer = require('multer');
 
 
-var storage =   multer.diskStorage({
+var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-      callback(null, 'uploads');
+        callback(null, 'uploads');
     },
     filename: function (req, file, callback) {
         callback(null, `${file.fieldname}-${Date.now()}.${file.originalname}`);
     }
-  });
+});
 
-  var upload = multer({ storage: storage });
+var upload = multer({ storage: storage });
 
 router.get('/', function (req, res) {
     var busca = req.body._id;
@@ -25,12 +25,12 @@ router.get('/', function (req, res) {
 router.get('/todos', function (req, res) {
     localizacao.find({}).exec(function (err, result) {
         if (err) throw err;
-        res.json({ localizacoes :result });
+        res.json({ localizacoes: result });
     });
 });
 
-router.post('/novalocalidade',  upload.array('photos', 12), function (req, res, next) {
-    
+router.post('/novalocalidade', upload.array('photos', 12), function (req, res, next) {
+
     console.log(req.body);
     var local = new localizacao();
 
@@ -39,15 +39,30 @@ router.post('/novalocalidade',  upload.array('photos', 12), function (req, res, 
     local.latitude = req.body.latitude;
     local.longitude = req.body.longitude;
     console.log(req.files.length);
-    for(var i = 0; i < req.files.length; i++ ){
-        local.pathImages[i] =  req.files[i].path;
+    for (var i = 0; i < req.files.length; i++) {
+        local.pathImages[i] = req.files[i].path;
     }
     local.idUsuario = req.body.idUsuario;
     local.save(function (err) {
         if (err) {
             res.send(err);
         } else {
-            res.json({ message: 'localidade criada!' });
+            console.log('test' + JSON.stringify(local));
+            var dateobj = local.createdAt;
+            function pad(n) { return n < 10 ? "0" + n : n; }
+            var dataC = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
+
+            var dateobj = local.updatedAt;
+            function pad(n) { return n < 10 ? "0" + n : n; }
+            var dataA = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
+
+            res.json({
+                message: 'localidade criada!',
+
+
+                dataCriacao: dataC,
+                dataAtualizacao: dataA,
+            });
         }
     });
 
@@ -57,7 +72,7 @@ router.route('/deletarlocalidade').delete(function (req, res) {
     var busca = req.body._id;
 
     localizacao.deleteOne({ "_id": busca }).exec(function (err, local) {
-        var text
+        //Adicionar remoção de imagens na pasta
         console.log(local);
         if (err) {
             res.json({ err });
