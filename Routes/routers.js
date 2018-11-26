@@ -60,6 +60,7 @@ router.post('/novalocalidade', upload.array('photos', 12), function (req, res, n
                 message: 'localidade criada!',
                 createdAt: local.createdAt,
                 updatedAt: local.updatedAt,
+                _id : local._id,
             });
         }
     });
