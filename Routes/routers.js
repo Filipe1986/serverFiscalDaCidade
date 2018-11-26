@@ -58,10 +58,8 @@ router.post('/novalocalidade', upload.array('photos', 12), function (req, res, n
 
             res.json({
                 message: 'localidade criada!',
-
-
-                dataCriacao: dataC,
-                dataAtualizacao: dataA,
+                createdAt: local.createdAt,
+                updatedAt: local.updatedAt,
             });
         }
     });
