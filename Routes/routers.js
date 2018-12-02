@@ -47,20 +47,12 @@ router.post('/novalocalidade', upload.array('photos', 12), function (req, res, n
         if (err) {
             res.send(err);
         } else {
-            //console.log('test' + JSON.stringify(local));
-            //var dateobj = local.createdAt;
-            //function pad(n) { return n < 10 ? "0" + n : n; }
-            //var dataC = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
-
-            //var dateobj = local.updatedAt;
-            //function pad(n) { return n < 10 ? "0" + n : n; }
-            //var dataA = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
 
             res.json({
                 message: 'localidade criada!',
                 createdAt: local.createdAt,
                 updatedAt: local.updatedAt,
-                _id : local._id,
+                _id: local._id,
             });
         }
     });
@@ -98,11 +90,42 @@ router.route('/atualizarlocalidade').post(function (req, res) {
     });
 
 });
-router.get('/votar', function (req, res) {
+
+router.route('/votar').post(function (req, res) {
+
     var busca = req.body._id;
+    var count = 0;
+
     localizacao.findOne({ "_id": busca }).exec(function (err, local) {
-        local
-        res.json({ local });
+        if (err) {
+            res.json({ message: err })
+        }
+        if (local) {
+            local.votos.forEach(voto => {
+                if (voto.usuario == req.body.votante && voto.posicionamento != req.body.posicionamento) {
+                    voto.posicionamento = req.body.posicionamento
+                    local.save();
+                    count++;
+                    res.json({ message: "Voto trocado" });
+
+                } else if (voto.usuario == req.body.votante) {
+                    count++;
+                    res.json({ message: "Voto mantido" });
+
+                }
+            });
+            if (count == 0) {
+                local.votos.push({ usuario: req.body.votante, posicionamento: req.body.posicionamento });
+                local.save();
+                res.json({ local });
+
+            }
+            
+        }else {
+            res.json({ message: "local não encontrado" });
+        }
+
+
     });
 });
 
