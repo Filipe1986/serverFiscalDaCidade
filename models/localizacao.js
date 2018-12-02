@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var voto = new Schema({
+    usuario:{type: Schema.Types.ObjectId, require: true},
+    voting:{ type: Boolean, required: true}
+});
+
 var LocalizacaoSchema = new mongoose.Schema(
     {
         titulo :{ type: String, required: true },
@@ -8,12 +13,8 @@ var LocalizacaoSchema = new mongoose.Schema(
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true },
         pathImages: [{type: String , required :false}],
-        //idUsuario: {type: Schema.Types.ObjectId,  ref: 'Usuario'}
-        idUsuario: {type: Schema.Types.ObjectId, require: true, ref: "Usuario"  }
-        
-        //data : { type : Date, default: Date.now },
-        //likes : [{ type: Schema.ObjectId, ref: 'User'}]
-
+        idUsuario: {type: Schema.Types.ObjectId, require: true, ref: "Usuario"  },
+        votos : [voto]
     }, {timestamps: true}
 );
 module.exports = mongoose.model('Localizacao', LocalizacaoSchema);

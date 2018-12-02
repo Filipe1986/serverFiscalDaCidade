@@ -47,14 +47,14 @@ router.post('/novalocalidade', upload.array('photos', 12), function (req, res, n
         if (err) {
             res.send(err);
         } else {
-            console.log('test' + JSON.stringify(local));
-            var dateobj = local.createdAt;
-            function pad(n) { return n < 10 ? "0" + n : n; }
-            var dataC = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
+            //console.log('test' + JSON.stringify(local));
+            //var dateobj = local.createdAt;
+            //function pad(n) { return n < 10 ? "0" + n : n; }
+            //var dataC = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
 
-            var dateobj = local.updatedAt;
-            function pad(n) { return n < 10 ? "0" + n : n; }
-            var dataA = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
+            //var dateobj = local.updatedAt;
+            //function pad(n) { return n < 10 ? "0" + n : n; }
+            //var dataA = pad(dateobj.getDate()) + "/" + pad(dateobj.getMonth() + 1) + "/" + dateobj.getFullYear();
 
             res.json({
                 message: 'localidade criada!',
@@ -71,7 +71,7 @@ router.route('/deletarlocalidade').delete(function (req, res) {
     var busca = req.body._id;
 
     localizacao.deleteOne({ "_id": busca }).exec(function (err, local) {
-        //Adicionar remoção de imagens na pasta
+        //Fazer remoção de imagens na pasta
         console.log(local);
         if (err) {
             res.json({ err });
@@ -97,6 +97,13 @@ router.route('/atualizarlocalidade').post(function (req, res) {
         res.send(local);
     });
 
+});
+router.get('/votar', function (req, res) {
+    var busca = req.body._id;
+    localizacao.findOne({ "_id": busca }).exec(function (err, local) {
+        local
+        res.json({ local });
+    });
 });
 
 module.exports = router;
