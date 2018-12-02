@@ -15,16 +15,40 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.get('/', function (req, res) {
+router.post('/', function (req, res) {
+    console.log(req.body._id)
     var busca = req.body._id;
-    localizacao.find({ "_id": busca }).lean().exec(function (err, local) {
-        res.json({ local });
+    localizacao.findOne({ "_id": busca }).lean().exec(function (err, local) {
+        var voted;
+        console.log(local.vote.positive.length)
+        local.vote.positive.forEach(element =>{
+            if(element.idUsuario == req.body._id){
+                 voted = "upvoted";
+
+            }
+        })
+        local.vote.negative.forEach(element =>{
+            if(element.idUsuario == req.body._id){
+                 voted = "downvoted";
+            }
+        })
+
+        res.json({local,        
+                  upvote : local.vote.positive.length,
+                  downvote: local.vote.negative.length,  
+                  voted : voted
+                })
     });
 });
 
 router.get('/todos', function (req, res) {
     localizacao.find({}).exec(function (err, result) {
         if (err) throw err;
+        result.forEach(element => {
+            element.upvote = element.upvotes(),
+            element.downvote = element.downvotes()
+            element.save()
+        });
         res.json({ localizacoes: result });
     });
 });
@@ -116,14 +140,12 @@ router.route('/votar').post(function (req, res) {
             }
             console.log(local);
             
-            var vUpvote = local.upvotes();
-            var vDownvote = local.downvotes();
-            
 
             res.json({
-                _id : local._id,
-                upvote : vUpvote,
-                downvote: vDownvote
+                local,
+                upvote : local.upvotes(),
+                downvote: local.downvotes(),
+                voted : "upvoted"
 
             })
         }else if( !posicionamento) {
@@ -131,12 +153,11 @@ router.route('/votar').post(function (req, res) {
             local.downvote(votante);
             local.save();
 
-            var vUpvote = local.upvotes();
-            var vDownvote = local.downvotes();
             res.json({
-                _id : local._id,
-                upvote : vUpvote,
-                downvote: vDownvote
+                local,
+                upvote : local.upvotes(),
+                downvote: local.downvotes(),
+                voted : "downvoted"
 
             })
 
