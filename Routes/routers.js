@@ -94,38 +94,53 @@ router.route('/atualizarlocalidade').post(function (req, res) {
 router.route('/votar').post(function (req, res) {
 
     var busca = req.body._id;
-    var count = 0;
+    //var count = 0;
 
-    localizacao.findOne({ "_id": busca }).exec(function (err, local) {
-        if (err) {
-            res.json({ message: err })
+    localizacao.findOne({ "_id": busca } ).exec(function (err, local) {
+        var votante = req.body.votante;
+        var posicionamento = req.body.posicionamento;
+        console.log("p " + posicionamento);
+        console.log("votante "+votante);
+        var notvalida = (posicionamento == undefined && votante  == undefined && posicionamento);
+        console.log("not valida "+notvalida);
+        if (err || !local || notvalida) {
+            res.json({ message: "Erro, voto não computado" })
         }
-        if (local) {
-            local.votos.forEach(voto => {
-                if (voto.usuario == req.body.votante && voto.posicionamento != req.body.posicionamento) {
-                    voto.posicionamento = req.body.posicionamento
-                    local.save();
-                    count++;
-                    res.json({ message: "Voto trocado" });
+        else if(posicionamento ){
+            console.log("upvote");
+            console.log(local);
+            if(votante){
 
-                } else if (voto.usuario == req.body.votante) {
-                    count++;
-                    res.json({ message: "Voto mantido" });
-
-                }
-            });
-            if (count == 0) {
-                local.votos.push({ usuario: req.body.votante, posicionamento: req.body.posicionamento });
+                local.upvote(votante);
                 local.save();
-                res.json({ local });
-
             }
+            console.log(local);
             
-        }else {
-            res.json({ message: "local não encontrado" });
+            var vUpvote = local.upvotes();
+            var vDownvote = local.downvotes();
+            
+
+            res.json({
+                _id : local._id,
+                upvote : vUpvote,
+                downvote: vDownvote
+
+            })
+        }else if( !posicionamento) {
+            console.log("downvoted")
+            local.downvote(votante);
+            local.save();
+
+            var vUpvote = local.upvotes();
+            var vDownvote = local.downvotes();
+            res.json({
+                _id : local._id,
+                upvote : vUpvote,
+                downvote: vDownvote
+
+            })
+
         }
-
-
     });
 });
 
