@@ -65,11 +65,14 @@ routersUsuario.route('/login').post(function (req, res) {
                 console.log('resultado' +JSON.stringify(usuario[0]._id));
                const token = jwt.sign({
                     email: usuario[0].email,
-                    userId: usuario[0]._id                    
+                    userId: usuario[0]._id,
+                    
+
                 }, config.jwtSecret, { expiresIn : "1h"});
                 return res.status(200).json(
                     {message: "Usário logado",
                     token : token,
+                    nome : usuario[0].nome,
                     _id: usuario[0]._id,
 
 
