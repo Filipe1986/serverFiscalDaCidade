@@ -73,7 +73,9 @@ routersUsuario.route('/login').post(function (req, res) {
                     {message: "Usário logado",
                     token : token,
                     nome : usuario[0].nome,
+                    createdAt : usuario[0].createdAt,
                     _id: usuario[0]._id,
+
 
 
                 });
