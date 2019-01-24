@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://heroku_bjdxk913:6kaum7nm90782lpnde5gqvh0s@ds119523.mlab.com:19523/heroku_bjdxk913' 
-||'mongodb://127.0.0.1/my_database';
+var mongoDB ='mongodb://heroku_n4jp8097:n513nau7ou9l6ijvvsckfdf7fk@ds253324.mlab.com:53324/heroku_n4jp8097'
+//OLD
+//var mongoDB = 'mongodb://heroku_bjdxk913:6kaum7nm90782lpnde5gqvh0s@ds119523.mlab.com:19523/heroku_bjdxk913' ;
 
 
 const config = {
